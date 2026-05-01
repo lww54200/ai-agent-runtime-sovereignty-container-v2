@@ -1,0 +1,21 @@
+services:
+  sovereign-agent:
+    build: .
+    image: ai-agent-runtime-sovereignty:local
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    volumes:
+      - agent_secure_state:/secure-state
+    environment:
+      AGENT_ID: april-claw-demo
+      AGENT_STATE_DIR: ./secure-state
+    command: ["status"]
+volumes:
+  agent_secure_state:
